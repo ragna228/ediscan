@@ -13,6 +13,8 @@ class GetData extends CodeEvent{
 
 class Add extends CodeEvent{
   String text;
+  String date;
+  BarcodeFormat format;
 
-  Add(this.text);
+  Add(this.text, this.date, this.format);
 }
