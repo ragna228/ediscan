@@ -36,7 +36,6 @@ class BottomNavigationBloc
     }
     else if(event is Init){
       await DbHelper.init();
-      //await Future.delayed(const Duration(seconds: 2));
       add(PageTapped(index: 0));
     }
   }
