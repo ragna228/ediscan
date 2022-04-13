@@ -1,7 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.pp">
+    <uses-permission android:name="android.permission.CAMERA"/>
    <application
-        android:label="pp"
+        android:label="Сканер"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
