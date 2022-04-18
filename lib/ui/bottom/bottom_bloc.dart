@@ -18,11 +18,6 @@ class BottomNavigationBloc
 
   void emitter(BottomNavigationEvent event, Emitter<BottomNavigationState> emit) async {
     if (event is PageTapped) {
-      if(currentIndex == -1){
-        emit(GetHolder());
-        currentIndex = 0;
-        return;
-      }
       currentIndex = event.index;
       if (currentIndex == 0) {
         emit(GetFirstPage(await Permission.camera.status));

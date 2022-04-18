@@ -1,8 +1,5 @@
-import 'dart:async';
-
 import 'package:EdiScan/core/helper.dart';
 import 'package:bloc/bloc.dart';
-import 'package:equatable/equatable.dart';
 import 'package:EdiScan/core/dao/database_helper.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 
@@ -18,7 +15,7 @@ class CodeBloc extends Bloc<CodeEvent, CodeState> {
         emit(DataReady());
       }
       else if(event is Add){
-        Code code = Code(null, event.text, event.date, Helper.convertFormatToLang(event.format));
+        Code code = Code(null, event.text, event.date, Helper.convertFormatToLang(event.format), Helper.convertType(event.type));
         await DbHelper.daoCodeService().insert(code);
         emit(DataReady());
       }

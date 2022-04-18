@@ -1,4 +1,5 @@
 import 'package:EdiScan/core/dao/database_helper.dart';
+import 'package:EdiScan/core/helper.dart';
 import 'package:EdiScan/ui/bottom/bottom_bloc.dart';
 import 'package:EdiScan/ui/bottom/bottom_event.dart';
 import 'package:flutter/material.dart';
@@ -27,7 +28,11 @@ class SecondPage extends StatelessWidget {
           }
           else if(state is GetDataState){
             if(state.codes.isNotEmpty) {
-              return ListCode(state.codes);
+              return
+                Container(
+                  child: ListCode(state.codes),
+                  margin: const EdgeInsets.only(bottom: 100),
+                );
             }
             else{
               return const PlaceHolder();
@@ -84,40 +89,38 @@ class ItemCode extends StatelessWidget{
 
   @override
   Widget build(BuildContext context) {
+    BarcodeType type = Helper.decodeType(code.formatData);
     return Card(
         child: InkWell(
           borderRadius: BorderRadius.circular(5),
           child: Container(
             padding: const EdgeInsets.all(15),
             child: Row(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Expanded(
-                    child: Text(
-                      "тип: ${code.format}",
-                      textAlign: TextAlign.center
-                    ),
-                    flex: 2
-                ),
-                Expanded(
-                    child: Text(
-                        code.date,
-                        textAlign: TextAlign.center
-                    ),
-                    flex: 2
-                ),
+                Icon(Helper.getIconFromType(type), color: Colors.black45, size: 30),
                 const SizedBox(width: 20),
                 Expanded(
-                    child: Text(
-                      code.value.length > 100 ? "${code.value.substring(0,100)}..." : code.value,
-                      textAlign: TextAlign.center
-                    ),
-                    flex: 3
-                ),
+
+                  child: Column(
+                    mainAxisSize: MainAxisSize.max,
+                    textDirection: TextDirection.ltr,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(Helper.getStringFromType(type), style: const TextStyle(color: Colors.black, fontSize: 20)),
+                      const SizedBox(height: 5),
+                      Text(code.value.length > 50 ? "${code.value.substring(0, 35)}..." : code.value, style: const TextStyle(color: Colors.black45, fontSize: 15)),
+                      Text(code.date, style: const TextStyle(color: Colors.black45, fontSize: 15))
+
+                    ],
+                  )
+                )
               ],
             ),
           ),
           onTap: () async {
-            await Navigator.push(context, MaterialPageRoute(builder: (context) => DisplayPage(code.value, code.date, code.format)));
+            await Navigator.push(context, MaterialPageRoute(builder: (context) => DisplayPage(code.value, code.date, code.formatCode, code.formatData)));
             context.read<BottomNavigationBloc>().add(PageTapped(index: 1));
           },
         ),

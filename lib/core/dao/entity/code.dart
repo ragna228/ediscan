@@ -6,9 +6,10 @@ class Code{
   @PrimaryKey(autoGenerate: true)
   late int? id;
   late final String date;
-  late final String format;
+  late final String formatCode;
+  late final String formatData;
 
-  Code(this.id, this.value, this.date, this.format);
+  Code(this.id, this.value, this.date, this.formatCode, this.formatData);
 
 
   @override

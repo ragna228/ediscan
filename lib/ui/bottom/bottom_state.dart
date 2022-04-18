@@ -12,10 +12,6 @@ class GetFirstPage extends BottomNavigationState {
 class GetSecondPage extends BottomNavigationState {
   GetSecondPage();
 }
-
-class GetHolder extends BottomNavigationState {
-  GetHolder();
-}
 class AppStartedB extends BottomNavigationState{
 
 }

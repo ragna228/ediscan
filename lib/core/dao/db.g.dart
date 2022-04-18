@@ -82,7 +82,7 @@ class _$AppDatabase extends AppDatabase {
       },
       onCreate: (database, version) async {
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `Code` (`value` TEXT NOT NULL, `id` INTEGER PRIMARY KEY AUTOINCREMENT, `date` TEXT NOT NULL, `format` TEXT NOT NULL)');
+            'CREATE TABLE IF NOT EXISTS `Code` (`value` TEXT NOT NULL, `id` INTEGER PRIMARY KEY AUTOINCREMENT, `date` TEXT NOT NULL, `formatCode` TEXT NOT NULL, `formatData` TEXT NOT NULL)');
 
         await callback?.onCreate?.call(database, version);
       },
@@ -106,7 +106,8 @@ class _$DaoCode extends DaoCode {
                   'value': item.value,
                   'id': item.id,
                   'date': item.date,
-                  'format': item.format
+                  'formatCode': item.formatCode,
+                  'formatData': item.formatData
                 });
 
   final sqflite.DatabaseExecutor database;
@@ -124,7 +125,8 @@ class _$DaoCode extends DaoCode {
             row['id'] as int?,
             row['value'] as String,
             row['date'] as String,
-            row['format'] as String));
+            row['formatCode'] as String,
+            row['formatData'] as String));
   }
 
   @override
