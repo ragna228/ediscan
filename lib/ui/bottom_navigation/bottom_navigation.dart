@@ -3,12 +3,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'bottom_bloc.dart';
-import 'bottom_event.dart';
-import 'bottom_state.dart';
+import 'bloc/bottom_bloc.dart';
+import 'bloc/bottom_event.dart';
+import 'bloc/bottom_state.dart';
 
-class BottomNav extends StatelessWidget{
-  const BottomNav({Key? key}) : super(key: key);
+class BottomNavigation extends StatelessWidget{
+  const BottomNavigation({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -24,28 +24,18 @@ class BottomNav extends StatelessWidget{
                   mainAxisSize: MainAxisSize.max,
                   children: [
                     Expanded(
-                        child: BottomItem(data: "Сканер", iconData: Icons.scanner, ind: 0, isCard: state is GetFirstPage)
+                        child: bottomItem(data: "Сканер", iconData: Icons.scanner, ind: 0, isCard: state is GetFirstPage, context:  context)
                     ),
                     Expanded(
                         child:
-                        BottomItem(data: "История", iconData: Icons.history, ind: 1, isCard: state is GetSecondPage)),
+                        bottomItem(data: "История", iconData: Icons.history, ind: 1, isCard: state is GetSecondPage, context: context)),
                   ],
                 ),
               ));
         });
   }
 
-}
-class BottomItem extends StatelessWidget {
-  String data;
-  IconData iconData;
-  int ind;
-  bool isCard;
-
-  BottomItem({Key? key, required this.data, required this.iconData, required this.ind, required this.isCard}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
+  Widget bottomItem({required String data, required IconData iconData, required int ind, required bool isCard, required BuildContext context}){
     Column c = Column(
         mainAxisAlignment: MainAxisAlignment.center,
         mainAxisSize: MainAxisSize.min,
@@ -68,4 +58,5 @@ class BottomItem extends StatelessWidget {
         }
     );
   }
+
 }

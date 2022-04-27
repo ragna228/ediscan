@@ -1,12 +1,14 @@
-import 'package:EdiScan/ui/bottom/bottom_event.dart';
-import 'package:EdiScan/ui/bottom/bottom_bloc.dart';
-import 'package:EdiScan/ui/bottom/bottom_navigation.dart';
-import 'package:EdiScan/ui/bottom/bottom_state.dart';
-import 'package:EdiScan/ui/pages/list_code_page/code_bloc.dart';
+import 'package:EdiScan/ui/bottom_navigation/bloc/bottom_bloc.dart';
+import 'package:EdiScan/ui/bottom_navigation/bloc/bottom_event.dart';
+import 'package:EdiScan/ui/bottom_navigation/bloc/bottom_state.dart';
+import 'package:EdiScan/ui/bottom_navigation/bottom_navigation.dart';
+import 'package:EdiScan/ui/pages/display_code_page/bloc/display_code_bloc.dart';
+import 'package:EdiScan/ui/pages/history_code_page/bloc/code_bloc.dart';
+import 'package:EdiScan/ui/pages/scan_code_page/first_scan_code_page.dart';
 import 'package:EdiScan/ui/pages/scan_code_page/scan_code_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:EdiScan/ui/pages/list_code_page/list_code_page.dart';
+import 'package:EdiScan/ui/pages/history_code_page/history_code_page.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 void main() {
@@ -21,7 +23,11 @@ class CoreApp extends StatelessWidget {
     return BlocProvider<BottomNavigationBloc>(
       create: (context) => BottomNavigationBloc(),
       child: BlocProvider<CodeBloc>(
-          create: (context) => CodeBloc(), child: const UIApp()
+          create: (context) => CodeBloc(),
+          child: BlocProvider<DisplayCodeBloc>(
+            create: (context) => DisplayCodeBloc(),
+            child: const UIApp(),
+          )
       )
     );
   }
@@ -52,7 +58,7 @@ class AppScreen extends StatelessWidget {
 class Body extends StatelessWidget with WidgetsBindingObserver {
 
   late BottomNavigationBloc bloc;
-  FirstScannerPage firstScannerPage = FirstScannerPage();
+  FirstScanCodePage firstScannerPage = const FirstScanCodePage();
 
   Body({Key? key}) : super(key: key);
 
@@ -65,7 +71,7 @@ class Body extends StatelessWidget with WidgetsBindingObserver {
         builder: (BuildContext context, BottomNavigationState state) {
           if (state is GetFirstPage) {
             if (state.status == PermissionStatus.granted) {
-              return ScannerPage();
+              return ScanCodePage();
             } else if (state.status == PermissionStatus.denied) {
               return firstScannerPage;
             } else if(state.status == PermissionStatus.permanentlyDenied){
@@ -78,13 +84,12 @@ class Body extends StatelessWidget with WidgetsBindingObserver {
           return Container();
         },
       ),
-      const BottomNav()
+      const BottomNavigation()
     ]);
   }
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
-    debugPrint("assssssssssssssssss1: " + state.name);
 
     bloc.add(PageTapped(index: 0));
   }

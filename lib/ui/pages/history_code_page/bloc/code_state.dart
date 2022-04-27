@@ -1,4 +1,4 @@
-part of 'code_bloc.dart';
+import '../../../../core/dao/entity/code.dart';
 
 abstract class CodeState {
   const CodeState();
