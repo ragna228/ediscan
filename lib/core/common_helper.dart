@@ -15,16 +15,22 @@ class Helper{
   static MobileScannerController getControllerFiles(BuildContext context){
     if(_controllerFiles == null){
       _controllerFiles = MobileScannerController(formats: [BarcodeFormat.all]);
+      _controllerFiles?.stop();
       _controllerFiles!.barcodes.listen((event) async {
-        Barcode code = event;
-        String date = Helper.format.format(DateTime.now());
-        context.read<CodeBloc>().add(Add(code, date));
-        await Navigator.push(context,
-            MaterialPageRoute(builder: (context) =>
-                DisplayCodePage(Helper.getValueFromType(code), date, Helper.getDisplayFormat(code.format), code.type.name
-                )
-            )
-        );
+        try {
+          Barcode code = event;
+          String date = Helper.format.format(DateTime.now());
+          context.read<CodeBloc>().add(Add(code, date));
+          await Navigator.push(context,
+              MaterialPageRoute(builder: (context) =>
+                  DisplayCodePage(Helper.getValueFromType(code), date,
+                      Helper.getDisplayFormat(code.format), code.type.name
+                  )
+              )
+          );
+        } on Exception catch(e){
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("ошибка в чтении кода ${e}")));
+        }
       });
     }
     return _controllerFiles!;

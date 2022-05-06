@@ -19,9 +19,9 @@ class ActionItemWidget extends StatelessWidget{
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                Icon(data, color: Colors.white60,),
+                Icon(data, color: Colors.white60, size: 20,),
                 const SizedBox(height: 10),
-                Text(value, style: const TextStyle(fontSize: 16, color: Colors.white60)),
+                Text(value, style: const TextStyle(fontSize: 13, color: Colors.white60)),
               ],
             ),
           ),

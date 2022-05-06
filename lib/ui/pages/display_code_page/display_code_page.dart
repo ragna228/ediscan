@@ -4,7 +4,9 @@ import 'package:EdiScan/ui/pages/display_code_page/bloc/display_code_bloc.dart';
 import 'package:EdiScan/ui/pages/display_code_page/widgets/action_item_widget.dart';
 import 'package:EdiScan/ui/pages/display_code_page/widgets/scrol_text_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_share/flutter_share.dart';
 import 'package:hexagon/hexagon.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 
@@ -23,6 +25,30 @@ class DisplayCodePage extends StatelessWidget{
         body: Stack(
           children: [
             cardCode(value, date, type, codeType, context),
+            Align(
+                alignment: Alignment.bottomCenter,
+                child: Container(
+                  margin: const EdgeInsets.only(left: 25, right: 25, bottom: 20),
+                  child: Card(
+                    color: Colors.black38,
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        ActionItemWidget("Скопировать", Icons.copy, () {
+                          context.read<DisplayCodeBloc>().add(Copy(value));
+                          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                            content: Text("Скопировано в буфер обмена"),
+                          ));
+
+                        }),
+                        ActionItemWidget("Поделиться", Icons.share, () {
+                          context.read<DisplayCodeBloc>().add(Share(value));
+                        }),
+                      ],
+                    ),
+                  ),
+                )
+            )
           ],
         )
       );
@@ -33,7 +59,7 @@ class DisplayCodePage extends StatelessWidget{
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Align(
               child:
@@ -67,30 +93,6 @@ class DisplayCodePage extends StatelessWidget{
                 alignment: Alignment.center,
               ),
               margin: const EdgeInsets.only(left: 20, right: 20),
-            ),
-            Align(
-                alignment: Alignment.bottomCenter,
-                child: Container(
-                  margin: const EdgeInsets.only(left: 25, right: 25, bottom: 0),
-                  child: Card(
-                    color: Colors.black38,
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        ActionItemWidget("Скопировать", Icons.copy, () {
-                          context.read<DisplayCodeBloc>().add(Copy(value));
-                          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                            content: Text("Скопировано в буфер обмена"),
-                          ));
-
-                        }),
-                        ActionItemWidget("Поделиться", Icons.share, () {
-                          context.read<DisplayCodeBloc>().add(Share(value));
-                        }),
-                      ],
-                    ),
-                  ),
-                )
             )
           ]
         ),

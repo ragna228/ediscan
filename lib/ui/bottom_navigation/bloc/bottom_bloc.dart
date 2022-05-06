@@ -17,12 +17,14 @@ class BottomNavigationBloc
 
   void emitter(BottomNavigationEvent event, Emitter<BottomNavigationState> emit) async {
     if (event is PageTapped) {
-      currentIndex = event.index;
-      if (currentIndex == 0) {
-        emit(GetFirstPage(await Permission.camera.status));
-      }
-      else if(currentIndex == 1){
-        emit(GetSecondPage());
+      if(currentIndex != event.index) {
+        currentIndex = event.index;
+        if (currentIndex == 0) {
+          emit(GetFirstPage(await Permission.camera.status));
+        }
+        else if (currentIndex == 1) {
+          emit(GetSecondPage());
+        }
       }
     }
     else if(event is RequestChanged){
@@ -30,7 +32,7 @@ class BottomNavigationBloc
     }
     else if(event is Init){
       await DbHelper.init();
-      add(PageTapped(index: 0));
+      emit(GetFirstPage(await Permission.camera.status));
     }
   }
 }
